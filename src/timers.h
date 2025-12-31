@@ -3,8 +3,8 @@
 
 #include <stdint.h>
 
-#define OPCODES_PER_SECOND 600
-#define TIMER_HZ 60
+#define OPCODES_PER_SECOND 600U
+#define TIMER_HZ 60U
 #define TIMER_MS (1000 / TIMER_HZ)
 #define CYCLE_DELAY_MS (1000 / OPCODES_PER_SECOND)
 
