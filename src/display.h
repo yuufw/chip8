@@ -5,11 +5,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
-enum {
-  DISPLAY_WIDTH = 64,
-  DISPLAY_HEIGHT = 32,
-  DISPLAY_SIZE = DISPLAY_WIDTH * DISPLAY_HEIGHT
-};
+#define DISPLAY_WIDTH 64U
+#define DISPLAY_HEIGHT 32U
+#define DISPLAY_SIZE (DISPLAY_WIDTH * DISPLAY_HEIGHT)
 
 typedef struct {
   uint8_t pixels[DISPLAY_SIZE];
