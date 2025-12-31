@@ -5,8 +5,6 @@ void display_init(Display *disp) {
     disp->pixels[i] = 0u;
 }
 
-void display_clear(Display *disp) { display_init(disp); }
-
 uint8_t display_draw_sprite(Display *disp, Memory *m, uint16_t I, uint8_t x,
                             uint8_t y, uint8_t n) {
   uint8_t collision = 0;
