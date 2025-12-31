@@ -8,7 +8,7 @@
 #define TIMER_MS (1000 / TIMER_HZ)
 #define CYCLE_DELAY_MS (1000 / OPCODES_PER_SECOND)
 
-typedef struct Timers {
+typedef struct {
   uint8_t dt;
   uint8_t st;
 } Timers;
