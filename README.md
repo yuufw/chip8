@@ -3,48 +3,68 @@
 This is a simple CHIP-8 emulator written in C. CHIP-8 is an interpreted programming language that was used on some early computers and gaming consoles.
 
 ## Requirements
+
 - GCC or any C compiler
 - SDL2 library for graphics and input handling
 - SDL2_ttf library for font rendering
 - Make utility
 
 ## Installation
+
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/yuufw/chip8.git
    cd chip8
    ```
+
 2. Install SDL2 library:
    - On Ubuntu/Debian:
+
      ```bash
      sudo apt-get install libsdl2-dev
      ```
+
    - On macOS using Homebrew:
+
      ```bash
      brew install sdl2
      ```
+
 3. Install SDL2_ttf library:
    - On Ubuntu/Debian:
+
      ```bash
      sudo apt-get install libsdl2-ttf-dev
      ```
+
    - On macOS using Homebrew:
+
      ```bash
      brew install sdl2_ttf
      ```
+
 4. Compile the interpreter:
+
    ```bash
    make
    ```
+
 ## Usage
+
 To run a CHIP-8 program, use the following command:
+
 ```bash
 ./chip8 path/to/your/program.ch8
 ```
+
 Replace `path/to/your/program.ch8` with the actual path to your CHIP-8 program file.
+
 ## Controls
+
 The CHIP-8 interpreter uses the following key mapping for input:
-```
+
+```c
 Original CHIP-8 Keypad       Mapped Keyboard Keys
 +---+---+---+---+            +---+---+---+---+
 | 1 | 2 | 3 | C |            | 1 | 2 | 3 | 4 |
