@@ -51,6 +51,8 @@ void debugger_render_registers(const Chip8 *c8) {
     case REG_DT:
       snprintf(text_buffer, sizeof(text_buffer), "DT = %02X", c8->timers.dt);
       break;
+    default:
+      break;
     }
 
     platform_render_text(
