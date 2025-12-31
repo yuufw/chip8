@@ -7,7 +7,7 @@
 #define MEM_SIZE 4096U
 #define FONTSET_ADDR 0x50U
 
-typedef struct {
+typedef struct __attribute__((packed)) {
   uint8_t memory[MEM_SIZE];
 } Memory;
 

@@ -18,7 +18,7 @@
 
 #define DISPLAY_SIZE (DISPLAY_WIDTH * DISPLAY_HEIGHT)
 
-typedef struct {
+typedef struct __attribute__((packed)) {
   uint8_t pixels[DISPLAY_SIZE];
 } Display;
 

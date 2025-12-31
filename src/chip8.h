@@ -13,7 +13,7 @@
 #define CHIP8_NUM_REGS 16U
 #define CHIP8_STACK_LEN 16U
 
-typedef struct {
+typedef struct __attribute__((packed)) {
   Memory mem;
   Display disp;
   Input input;
