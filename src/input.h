@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-enum { NUM_KEYS = 16 };
+#define NUM_KEYS 16
 
 typedef struct Input {
   uint8_t keys[NUM_KEYS];

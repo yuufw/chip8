@@ -8,7 +8,7 @@ void input_init(Input *in) {
 }
 
 void input_set_key(Input *in, uint8_t key, uint8_t pressed) {
-  if (key < 16)
+  if (key < NUM_KEYS)
     in->keys[key] = pressed;
 }
 
