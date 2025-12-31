@@ -3,6 +3,16 @@
 static SDL_Window *debugger_reg_window = NULL;
 static SDL_Renderer *debugger_reg_renderer = NULL;
 
+typedef enum {
+  REG_V0 = 0,
+  REG_VF = 15,
+  REG_I = 16,
+  REG_PC = 17,
+  REG_SP = 18,
+  REG_DT = 19,
+  REG_COUNT = 20
+} DebuggerRegister;
+
 void debugger_render_registers(const Chip8 *c8) {
 #ifdef USE_SDL
   if (!debugger_reg_renderer || !c8)
@@ -15,37 +25,37 @@ void debugger_render_registers(const Chip8 *c8) {
 
   char text_buffer[64];
 
-  for (size_t register_index = 0; register_index < 20; register_index++) {
+  for (DebuggerRegister reg = 0; reg < REG_COUNT; reg++) {
 
-    size_t grid_col = register_index / DEBUGGER_GRID_WIDTH;
-    size_t grid_row = register_index % DEBUGGER_GRID_WIDTH;
+    size_t grid_col = reg / DEBUGGER_GRID_WIDTH;
+    size_t grid_row = reg % DEBUGGER_GRID_WIDTH;
 
-    switch (register_index) {
-    case 0 ... 15:
+    switch (reg) {
+    case REG_V0 ... REG_VF:
       snprintf(text_buffer, sizeof(text_buffer), "V%lX = %02X",
-               (unsigned long)register_index, c8->V[register_index]);
+               (unsigned long)reg, c8->V[reg]);
       break;
 
-    case 16:
+    case REG_I:
       snprintf(text_buffer, sizeof(text_buffer), "I  = %03X", c8->I);
       break;
 
-    case 17:
+    case REG_PC:
       snprintf(text_buffer, sizeof(text_buffer), "PC = %03X", c8->pc);
       break;
 
-    case 18:
+    case REG_SP:
       snprintf(text_buffer, sizeof(text_buffer), "SP = %X", c8->sp);
       break;
 
-    case 19:
+    case REG_DT:
       snprintf(text_buffer, sizeof(text_buffer), "DT = %02X", c8->timers.dt);
       break;
     }
 
-    platform_render_text(debugger_reg_renderer,
-                         DEBUGGER_TEXT_OFFSET_X + (int)(grid_col * 110),
-                         DEBUGGER_TEXT_OFFSET_Y + (int)(grid_row * 20), text_buffer);
+    platform_render_text(
+        debugger_reg_renderer, DEBUGGER_TEXT_OFFSET_X + (int)(grid_col * 110),
+        DEBUGGER_TEXT_OFFSET_Y + (int)(grid_row * 20), text_buffer);
   }
 
   SDL_RenderPresent(debugger_reg_renderer);
