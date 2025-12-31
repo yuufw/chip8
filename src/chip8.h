@@ -10,7 +10,8 @@
 #include "memory.h"
 #include "timers.h"
 
-enum { CHIP8_NUM_REGS = 16, CHIP8_STACK_LEN = 16 };
+#define CHIP8_NUM_REGS 16U
+#define CHIP8_STACK_LEN 16U
 
 typedef struct {
   Memory mem;
