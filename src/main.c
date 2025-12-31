@@ -5,6 +5,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define SCREEN_SCALE 10
+#define DISPLAY_WIDTH 64U
+#define DISPLAY_HEIGHT 32U
+#define DISPLAY_WIDTH_SCALED (DISPLAY_WIDTH * SCREEN_SCALE)
+#define DISPLAY_HEIGHT_SCALED (DISPLAY_HEIGHT * SCREEN_SCALE)
+
+#define DEBUGGER_DISPLAY_WIDTH 220U
+#define DEBUGGER_DISPLAY_HEIGHT 220U
+#define DEBUGGER_DISPLAY_X 350U
+#define DEBUGGER_DISPLAY_Y 100U
+
 int main(int argc, char **argv) {
   if (argc < 2) {
     printf("Usage: %s <ROM file>\n", argv[0]);
@@ -20,12 +31,15 @@ int main(int argc, char **argv) {
   }
 
   if (platform_init("Chip8 Emulator", SDL_WINDOWPOS_CENTERED,
-                    SDL_WINDOWPOS_CENTERED, 640, 320) != 0) {
+                    SDL_WINDOWPOS_CENTERED, DISPLAY_WIDTH_SCALED,
+                    DISPLAY_HEIGHT_SCALED) != 0) {
     fprintf(stderr, "Failed to initialize SDL platform\n");
     return 1;
   }
 
-  if (platform_init_debugger("Chip8 Instructions", 350, 100, 220, 220) != 0) {
+  if (platform_init_debugger("Chip8 Instructions", DEBUGGER_DISPLAY_X,
+                             DEBUGGER_DISPLAY_Y, DEBUGGER_DISPLAY_WIDTH,
+                             DEBUGGER_DISPLAY_HEIGHT) != 0) {
     fprintf(stderr, "Failed to initialize SDL debug platform\n");
     return 1;
   }
@@ -37,7 +51,7 @@ int main(int argc, char **argv) {
     platform_handle_input(&c8.input);
 
     if (c8.input.waiting_for_key >= 0) {
-      for (uint8_t k = 0; k < 16; k++) {
+      for (uint8_t k = 0; k < NUM_KEYS; k++) {
         if (c8.input.keys[k]) {
           c8.V[c8.input.waiting_for_key] = k;
           c8.input.waiting_for_key = -1;
