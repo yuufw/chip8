@@ -6,7 +6,7 @@
 
 #define NUM_KEYS 16U
 
-typedef struct Input {
+typedef struct {
   uint8_t keys[NUM_KEYS];
   int8_t waiting_for_key;
   bool exit_signal;
