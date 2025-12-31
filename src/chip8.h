@@ -1,14 +1,14 @@
 #ifndef CHIP8_H
 #define CHIP8_H
 
-#include <stdbool.h>
-#include <stddef.h>
-#include <stdint.h>
-
 #include "display.h"
 #include "input.h"
 #include "memory.h"
 #include "timers.h"
+
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
 
 #define CHIP8_NUM_REGS 16U
 #define CHIP8_STACK_LEN 16U

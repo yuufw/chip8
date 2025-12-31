@@ -13,15 +13,12 @@ void debugger_render_registers(const Chip8 *c8) {
 
   SDL_RenderClear(debugger_reg_renderer);
 
-  const int origin_x = 10;
-  const int origin_y = 10;
-
   char text_buffer[64];
 
   for (size_t register_index = 0; register_index < 20; register_index++) {
 
-    size_t grid_col = register_index / 10;
-    size_t grid_row = register_index % 10;
+    size_t grid_col = register_index / DEBUGGER_GRID_WIDTH;
+    size_t grid_row = register_index % DEBUGGER_GRID_WIDTH;
 
     switch (register_index) {
     case 0 ... 15:
@@ -47,8 +44,8 @@ void debugger_render_registers(const Chip8 *c8) {
     }
 
     platform_render_text(debugger_reg_renderer,
-                         origin_x + (int)(grid_col * 110),
-                         origin_y + (int)(grid_row * 20), text_buffer);
+                         DEBUGGER_TEXT_OFFSET_X + (int)(grid_col * 110),
+                         DEBUGGER_TEXT_OFFSET_Y + (int)(grid_row * 20), text_buffer);
   }
 
   SDL_RenderPresent(debugger_reg_renderer);

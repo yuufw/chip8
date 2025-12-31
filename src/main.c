@@ -1,6 +1,7 @@
 #include "chip8.h"
 #include "debugger.h"
 #include "platform.h"
+
 #include <SDL2/SDL.h>
 #include <stdio.h>
 #include <stdlib.h>

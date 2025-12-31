@@ -1,9 +1,10 @@
 #include "platform.h"
 #include "chip8.h"
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
+
 #include <stdbool.h>
 #include <stdint.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 
 static SDL_Window *win = NULL;
 static SDL_Renderer *ren = NULL;

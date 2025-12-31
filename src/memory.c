@@ -1,8 +1,9 @@
+#include "memory.h"
+
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
 
-#include "memory.h"
 
 void memory_init(Memory *m) {
   memset(m->memory, 0, sizeof(m->memory));

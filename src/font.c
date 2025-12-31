@@ -1,6 +1,6 @@
-#include <assert.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <assert.h>
 
 #if defined(__x86_64__) || defined(_M_X64)
 #define ARCH_ALIGN 8
