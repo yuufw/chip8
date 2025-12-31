@@ -3,7 +3,9 @@
 
 #include <stdint.h>
 
-enum { START_ADDR = 0x200, MEM_SIZE = 4096, FONTSET_ADDR = 0x50 };
+#define START_ADDR 0x200U
+#define MEM_SIZE 4096U
+#define FONTSET_ADDR 0x50U
 
 typedef struct {
   uint8_t memory[MEM_SIZE];
