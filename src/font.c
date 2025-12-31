@@ -10,7 +10,7 @@
 #define ARCH_ALIGN sizeof(void *)
 #endif
 
-#define MAX_CHIP8_MEMORY 4096
+#define MAX_CHIP8_MEMORY 4096U
 
 const uint8_t chip8_fontset[] __attribute__((aligned(ARCH_ALIGN))) = {
     0xF0, 0x90, 0x90, 0x90, 0xF0, 0x20, 0x60, 0x20, 0x20, 0x70,
