@@ -6,17 +6,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define SCREEN_SCALE 10
-#define DISPLAY_WIDTH 64U
-#define DISPLAY_HEIGHT 32U
-#define DISPLAY_WIDTH_SCALED (DISPLAY_WIDTH * SCREEN_SCALE)
-#define DISPLAY_HEIGHT_SCALED (DISPLAY_HEIGHT * SCREEN_SCALE)
-
-#define DEBUGGER_DISPLAY_WIDTH 220U
-#define DEBUGGER_DISPLAY_HEIGHT 220U
-#define DEBUGGER_DISPLAY_X 350U
-#define DEBUGGER_DISPLAY_Y 100U
-
 int main(int argc, char **argv) {
   if (argc < 2) {
     printf("Usage: %s <ROM file>\n", argv[0]);
