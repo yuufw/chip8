@@ -1,5 +1,7 @@
 #include "debugger.h"
 
+#include <errno.h>
+
 static SDL_Window *debugger_reg_window = NULL;
 static SDL_Renderer *debugger_reg_renderer = NULL;
 
@@ -13,10 +15,10 @@ typedef enum {
   REG_COUNT = 20
 } DebuggerRegister;
 
-void debugger_render_registers(const Chip8 *c8) {
+int debugger_render_registers(const Chip8 *c8) {
 #ifdef USE_SDL
   if (!debugger_reg_renderer || !c8)
-    return;
+    return -EINVAL;
 
   SDL_SetRenderDrawColor(debugger_reg_renderer, CRT_DARK_BG.r, CRT_DARK_BG.g,
                          CRT_DARK_BG.b, CRT_DARK_BG.a);
@@ -62,23 +64,18 @@ void debugger_render_registers(const Chip8 *c8) {
 
   SDL_RenderPresent(debugger_reg_renderer);
 #endif
+  return 0;
 }
 
 int platform_init_debugger(const char *title, int x, int y, int w, int h) {
 #ifdef USE_SDL
   if (!title)
-    return -1;
+    return -EINVAL;
 
   return platform_create_window(title, x, y, w, h, &debugger_reg_window,
                                 &debugger_reg_renderer);
-#else
-  (void)title;
-  (void)x;
-  (void)y;
-  (void)w;
-  (void)h;
-  return 0;
 #endif
+  return 0;
 }
 
 void debugger_shutdown() {
