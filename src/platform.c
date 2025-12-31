@@ -1,8 +1,10 @@
 #include "platform.h"
 #include "chip8.h"
 
+#include <errno.h>
 #include <stdbool.h>
 #include <stdint.h>
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 
@@ -14,13 +16,13 @@ int platform_init_font(void) {
 #ifdef USE_SDL
   if (TTF_Init() != 0) {
     fprintf(stderr, "[ERROR] TTF_Init failed: %s\n", TTF_GetError());
-    return -1;
+    return -ENOMEM;
   }
 
   font = TTF_OpenFont("assets/FreeMono.ttf", 18);
   if (!font) {
     fprintf(stderr, "[ERROR] Failed to load font: %s\n", TTF_GetError());
-    return -2;
+    return -ENOMEM;
   }
 #endif
   return 0;
@@ -110,8 +112,6 @@ void platform_handle_input(Input *in) {
       break;
     }
   }
-#else
-  (void)in;
 #endif
 }
 
@@ -123,8 +123,6 @@ void platform_update(const Chip8 *c8) {
   SDL_Color on = ORANGE_VINTAGE_CRT;
   SDL_Color off = CRT_DARK_BG;
 
-  const int scale = 10;
-
   for (size_t y = 0; y < DISPLAY_HEIGHT; y++) {
     for (size_t x = 0; x < DISPLAY_WIDTH; x++) {
 
@@ -134,7 +132,8 @@ void platform_update(const Chip8 *c8) {
 
       SDL_SetRenderDrawColor(ren, col.r, col.g, col.b, 255);
 
-      SDL_Rect rect = {(int)(x * scale), (int)(y * scale), scale, scale};
+      SDL_Rect rect = {(int)(x * SCREEN_SCALE), (int)(y * SCREEN_SCALE),
+                       SCREEN_SCALE, SCREEN_SCALE};
 
       SDL_RenderFillRect(ren, &rect);
     }
@@ -148,15 +147,14 @@ int platform_create_window(const char *title, int x, int y, int w, int h,
                            SDL_Window **out_win, SDL_Renderer **out_ren) {
 #ifdef USE_SDL
   if (!title || !out_win || !out_ren)
-    return -1;
+    return -EINVAL;
 
   *out_win = SDL_CreateWindow(title, x, y, w, h, SDL_WINDOW_SHOWN);
   if (!*out_win)
-    return -3;
-
+    return -ENOMEM;
   *out_ren = SDL_CreateRenderer(*out_win, -1, SDL_RENDERER_ACCELERATED);
   if (!*out_ren)
-    return -4;
+    return -ENOMEM;
 #endif
 
   return 0;
@@ -165,18 +163,18 @@ int platform_create_window(const char *title, int x, int y, int w, int h,
 int platform_render_text(SDL_Renderer *ren, int x, int y, const char *text) {
 #ifdef USE_SDL
   if (!ren || !text)
-    return -1;
+    return -EINVAL;
 
   SDL_Color fg = ORANGE_VINTAGE_CRT;
 
   SDL_Surface *surf = TTF_RenderText_Blended(font, text, fg);
   if (!surf)
-    return -2;
+    return -ENOMEM;
 
   SDL_Texture *tex = SDL_CreateTextureFromSurface(ren, surf);
   SDL_FreeSurface(surf);
   if (!tex)
-    return -3;
+    return -ENOMEM;
 
   SDL_SetTextureBlendMode(tex, SDL_BLENDMODE_BLEND);
 
@@ -191,19 +189,13 @@ int platform_render_text(SDL_Renderer *ren, int x, int y, const char *text) {
 int platform_init(const char *title, int x, int y, int w, int h) {
 #ifdef USE_SDL
   if (!title)
-    return -1;
+    return -EINVAL;
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) != 0)
-    return -2;
+    return -ENOMEM;
   platform_init_font();
   return platform_create_window(title, x, y, w, h, &win, &ren);
-#else
-  (void)title;
-  (void)x;
-  (void)y;
-  (void)w;
-  (void)h;
-  return 0;
 #endif
+  return 0;
 }
 
 void platform_shutdown(void) {
