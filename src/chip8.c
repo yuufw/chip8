@@ -17,7 +17,7 @@ inline void chip8_cycle(Chip8 *c8) {
   dispatch(c8, opcode);
 }
 
-inline void chip8_init(Chip8 *c8) {
+void chip8_init(Chip8 *c8) {
   memory_init(&c8->mem);
   display_init(&c8->disp);
   input_init(&c8->input);
