@@ -1,5 +1,5 @@
 CC ?= gcc
-CFLAGS ?= -O2 -Wall -I./src -std=c11
+CFLAGS ?= -O2 -Wall -I./inc -std=c11
 LDFLAGS ?=
 SDL_LIBS ?= -lSDL2 -lSDL2_ttf
 
