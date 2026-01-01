@@ -11,7 +11,7 @@ static inline uint16_t chip8_fetch(const Chip8 *c8) {
   return (uint16_t)((hi << 8) | lo);
 }
 
-inline void chip8_cycle(Chip8 *c8) {
+void chip8_cycle(Chip8 *c8) {
   const uint16_t opcode = chip8_fetch(c8);
   c8->pc += 2;
   dispatch(c8, opcode);
