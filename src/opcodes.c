@@ -105,10 +105,12 @@ static inline void op_invalid(Chip8 *c8, uint16_t op) {
    0x00**
    ============================================================ */
 
+// CLS
 static inline void op_00e0(Chip8 *c8, uint16_t op) {
   memset(c8->disp.pixels, 0, sizeof c8->disp.pixels);
 }
 
+// RET
 static inline void op_00ee(Chip8 *c8, uint16_t op) {
   if (c8->sp == 0)
     return;
@@ -123,8 +125,10 @@ static inline void op_0xxx(Chip8 *c8, uint16_t op) {
    1NNN / 2NNN
    ============================================================ */
 
+// JMP
 static inline void op_1nnn(Chip8 *c8, uint16_t op) { c8->pc = op & 0xFFF; }
 
+// CALL
 static inline void op_2nnn(Chip8 *c8, uint16_t op) {
   c8->stack[c8->sp++] = c8->pc;
   c8->pc = op & 0xFFF;
@@ -134,18 +138,21 @@ static inline void op_2nnn(Chip8 *c8, uint16_t op) {
    3XKK / 4XKK / 5XY0
    ============================================================ */
 
+// SE Vx, byte
 static inline void op_3xkk(Chip8 *c8, uint16_t op) {
   uint8_t x = (op >> 8) & 0xF;
   if (c8->V[x] == (op & 0xFF))
     c8->pc += 2;
 }
 
+// SNE Vx, byte
 static inline void op_4xkk(Chip8 *c8, uint16_t op) {
   uint8_t x = (op >> 8) & 0xF;
   if (c8->V[x] != (op & 0xFF))
     c8->pc += 2;
 }
 
+// SE Vx, Vy
 static inline void op_5xy0(Chip8 *c8, uint16_t op) {
   uint8_t x = (op >> 8) & 0xF;
   uint8_t y = (op >> 4) & 0xF;
@@ -157,10 +164,12 @@ static inline void op_5xy0(Chip8 *c8, uint16_t op) {
    6XKK / 7XKK
    ============================================================ */
 
+// LD Vx, byte
 static inline void op_6xkk(Chip8 *c8, uint16_t op) {
   c8->V[(op >> 8) & 0xF] = op & 0xFF;
 }
 
+// ADD Vx, byte
 static inline void op_7xkk(Chip8 *c8, uint16_t op) {
   uint8_t x = (op >> 8) & 0xF;
   c8->V[x] = (uint8_t)(c8->V[x] + (op & 0xFF));
@@ -170,19 +179,27 @@ static inline void op_7xkk(Chip8 *c8, uint16_t op) {
    8XY*
    ============================================================ */
 
+// LD Vx, Vy
 static inline void op_8xy0(Chip8 *c8, uint16_t op) {
   c8->V[(op >> 8) & 0xF] = c8->V[(op >> 4) & 0xF];
 }
+
+// OR Vx, Vy
 static inline void op_8xy1(Chip8 *c8, uint16_t op) {
   c8->V[(op >> 8) & 0xF] |= c8->V[(op >> 4) & 0xF];
 }
+
+// AND Vx, Vy
 static inline void op_8xy2(Chip8 *c8, uint16_t op) {
   c8->V[(op >> 8) & 0xF] &= c8->V[(op >> 4) & 0xF];
 }
+
+// XOR Vx, Vy
 static inline void op_8xy3(Chip8 *c8, uint16_t op) {
   c8->V[(op >> 8) & 0xF] ^= c8->V[(op >> 4) & 0xF];
 }
 
+// ADD Vx, Vy
 static inline void op_8xy4(Chip8 *c8, uint16_t op) {
   uint8_t x = (op >> 8) & 0xF, y = (op >> 4) & 0xF;
   uint16_t s = c8->V[x] + c8->V[y];
@@ -190,24 +207,28 @@ static inline void op_8xy4(Chip8 *c8, uint16_t op) {
   c8->V[x] = (uint8_t)s;
 }
 
+// SUB Vx, Vy
 static inline void op_8xy5(Chip8 *c8, uint16_t op) {
   uint8_t x = (op >> 8) & 0xF, y = (op >> 4) & 0xF;
   c8->V[0xF] = c8->V[x] > c8->V[y];
   c8->V[x] -= c8->V[y];
 }
 
+// SHR Vx {, Vy}
 static inline void op_8xy6(Chip8 *c8, uint16_t op) {
   uint8_t x = (op >> 8) & 0xF;
   c8->V[0xF] = c8->V[x] & 1;
   c8->V[x] >>= 1;
 }
 
+// SUBN Vx, Vy
 static inline void op_8xy7(Chip8 *c8, uint16_t op) {
   uint8_t x = (op >> 8) & 0xF, y = (op >> 4) & 0xF;
   c8->V[0xF] = c8->V[y] > c8->V[x];
   c8->V[x] = c8->V[y] - c8->V[x];
 }
 
+// SHL Vx {, Vy}
 static inline void op_8xye(Chip8 *c8, uint16_t op) {
   uint8_t x = (op >> 8) & 0xF;
   c8->V[0xF] = (c8->V[x] >> 7) & 1;
@@ -220,15 +241,21 @@ static inline void op_8xxx(Chip8 *c8, uint16_t op) { table8[op & 0xF](c8, op); }
    9XY0 / ANNN / BNNN / CXKK
    ============================================================ */
 
+// SNE Vx, Vy
 static inline void op_9xy0(Chip8 *c8, uint16_t o) {
   if (c8->V[(o >> 8) & 0xF] != c8->V[(o >> 4) & 0xF])
     c8->pc += 2;
 }
 
+// LD I, addr
 static inline void op_annn(Chip8 *c8, uint16_t o) { c8->I = o & 0xFFF; }
+
+// JMP V0, addr
 static inline void op_bnnn(Chip8 *c8, uint16_t o) {
   c8->pc = (o & 0xFFF) + c8->V[0];
 }
+
+// RND Vx, byte
 static inline void op_cxkk(Chip8 *c8, uint16_t o) {
   c8->V[(o >> 8) & 0xF] = (rand() & 0xFF) & (o & 0xFF);
 }
@@ -237,6 +264,7 @@ static inline void op_cxkk(Chip8 *c8, uint16_t o) {
    DXYN
    ============================================================ */
 
+// DRW Vx, Vy, nibble
 static inline void op_dxyn(Chip8 *c8, uint16_t o) {
   uint8_t x = c8->V[(o >> 8) & 0xF];
   uint8_t y = c8->V[(o >> 4) & 0xF];
@@ -248,39 +276,55 @@ static inline void op_dxyn(Chip8 *c8, uint16_t o) {
    EX**
    ============================================================ */
 
+// SKP Vx
 static inline void op_ex9e(Chip8 *c8, uint16_t o) {
   if (c8->input.keys[c8->V[(o >> 8) & 0xF]])
     c8->pc += 2;
 }
+
+// SKNP Vx
 static inline void op_exa1(Chip8 *c8, uint16_t o) {
   if (!c8->input.keys[c8->V[(o >> 8) & 0xF]])
     c8->pc += 2;
 }
+
 static inline void op_exxx(Chip8 *c8, uint16_t o) { tableE[o & 0xFF](c8, o); }
 
 /* ============================================================
    FX**
    ============================================================ */
 
+// LD Vx, DT
 static inline void op_fx07(Chip8 *c8, uint16_t o) {
   c8->V[(o >> 8) & 0xF] = c8->timers.dt;
 }
+
+// LD Vx, K
 static inline void op_fx0a(Chip8 *c8, uint16_t o) {
   input_wait_for_key(&c8->input, (o >> 8) & 0xF);
 }
+
+// LD DT, Vx
 static inline void op_fx15(Chip8 *c8, uint16_t o) {
   c8->timers.dt = c8->V[(o >> 8) & 0xF];
 }
+
+// LD ST, Vx
 static inline void op_fx18(Chip8 *c8, uint16_t o) {
   c8->timers.st = c8->V[(o >> 8) & 0xF];
 }
+
+// ADD I, Vx
 static inline void op_fx1e(Chip8 *c8, uint16_t o) {
   c8->I += c8->V[(o >> 8) & 0xF];
 }
+
+// LD F, Vx
 static inline void op_fx29(Chip8 *c8, uint16_t o) {
   c8->I = FONTSET_ADDR + c8->V[(o >> 8) & 0xF] * 5;
 }
 
+// LD B, Vx
 static inline void op_fx33(Chip8 *c8, uint16_t o) {
   uint8_t v = c8->V[(o >> 8) & 0xF];
   memory_write(&c8->mem, c8->I, v / 100);
@@ -288,11 +332,13 @@ static inline void op_fx33(Chip8 *c8, uint16_t o) {
   memory_write(&c8->mem, c8->I + 2, v % 10);
 }
 
+// LD [I], Vx
 static inline void op_fx55(Chip8 *c8, uint16_t o) {
   for (uint8_t i = 0; i <= ((o >> 8) & 0xF); i++)
     memory_write(&c8->mem, c8->I + i, c8->V[i]);
 }
 
+// LD Vx, [I]
 static inline void op_fx65(Chip8 *c8, uint16_t o) {
   for (uint8_t i = 0; i <= ((o >> 8) & 0xF); i++)
     c8->V[i] = memory_read(&c8->mem, c8->I + i);
