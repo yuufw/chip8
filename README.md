@@ -22,33 +22,20 @@ This implementation follows the [Cowgod's Chip-8 Technical Reference v1.0](http:
    cd chip8
    ```
 
-2. Install SDL2 library:
+2. Install SDL2 and SDL2_ttf libraries:
    - On Ubuntu/Debian:
 
      ```bash
-     sudo apt-get install libsdl2-dev
+     sudo apt-get install libsdl2-dev libsdl2-ttf-dev
      ```
 
    - On macOS using Homebrew:
 
      ```bash
-     brew install sdl2
+     brew install sdl2 sdl2_ttf
      ```
 
-3. Install SDL2_ttf library:
-   - On Ubuntu/Debian:
-
-     ```bash
-     sudo apt-get install libsdl2-ttf-dev
-     ```
-
-   - On macOS using Homebrew:
-
-     ```bash
-     brew install sdl2_ttf
-     ```
-
-4. Compile the interpreter:
+3. Compile the interpreter:
 
    ```bash
    make
