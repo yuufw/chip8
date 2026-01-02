@@ -35,7 +35,7 @@ This implementation follows the [Cowgod's Chip-8 Technical Reference v1.0](http:
      brew install sdl2 sdl2_ttf
      ```
 
-3. Compile the interpreter:
+3. Compile the emulator:
 
    ```bash
    make
@@ -53,7 +53,7 @@ Replace `path/to/your/program.ch8` with the actual path to your CHIP-8 program f
 
 ### Controls
 
-The CHIP-8 interpreter uses the following key mapping for input:
+The CHIP-8 uses the following key mapping for input:
 
 ```c
 Original CHIP-8 Keypad       Mapped Keyboard Keys
