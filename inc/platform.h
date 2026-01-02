@@ -14,4 +14,4 @@ void platform_update(const Chip8 *c8);
 int platform_render_text(SDL_Renderer *ren, int x, int y, const char *text);
 void platform_handle_input(Input *in);
 void platform_shutdown(void);
-#endif // PLATFORM_H
+#endif    // PLATFORM_H
