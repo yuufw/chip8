@@ -6,6 +6,7 @@ SDL_LIBS ?= -lSDL2 -lSDL2_ttf
 SRCDIR ?= src
 OBJDIR ?= obj
 BINDIR ?= bin
+HDRDIR ?= inc
 
 TARGET ?= $(BINDIR)/chip8
 
@@ -27,6 +28,9 @@ prepare:
 clean_objs:
 	@rm -f $(OBJDIR)/*.o
 
+format:
+	@clang-format -i $(SRCDIR)/*.c $(HDRDIR)/*.h
+
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@echo "Compiling $<..."
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -38,4 +42,4 @@ $(TARGET): $(OBJS)
 clean:
 	@rm -rf $(OBJDIR) $(BINDIR)
 
-.PHONY: all build sdl clean prepare clean_objs
+.PHONY: all build sdl clean prepare clean_objs format
